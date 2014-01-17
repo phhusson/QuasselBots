@@ -30,7 +30,21 @@
 #include "qconfig.h"
 
 #ifdef IRSSI_NOTIFIER
-static void send_notif(const char *buffer, const char *src, const char *msg) {
+char* clean_string(char *buffer) {
+	int i=0;
+	while (buffer[i]) {
+		if (buffer[i] == '\'') buffer[i] = '`';
+		i++;
+	}
+	return buffer;
+}
+
+
+static void send_notif(const char *b, const char *s, const char *m) {
+	char *buffer=clean_string(strdup(b));
+	char *src=clean_string(strdup(s));
+	char *msg=clean_string(strdup(m));
+
 	char *cmd = NULL;
 	asprintf(&cmd, "curl -d apiToken=" IRSSI_TOKEN
 			" -d message=$(echo '%s'| openssl enc -aes-128-cbc -salt -base64 -A -pass pass:password|tr '+/' '-_' |sed -e 's/=//g') "
@@ -39,6 +53,8 @@ static void send_notif(const char *buffer, const char *src, const char *msg) {
 		       "-d version=18 https://irssinotifier.appspot.com/API/Message", msg, src, buffer);
 	system(cmd);
 	free(cmd);
+	free(src);
+	free(msg);
 }
 
 static int ischannel(const char *c) {
