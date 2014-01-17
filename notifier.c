@@ -55,6 +55,7 @@ static void send_notif(const char *b, const char *s, const char *m) {
 	free(cmd);
 	free(src);
 	free(msg);
+	free(buffer);
 }
 
 static int ischannel(const char *c) {
