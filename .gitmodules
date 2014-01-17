@@ -1,0 +1,3 @@
+[submodule "QuasselC"]
+	path = QuasselC
+	url = http://github.com/phhusson/QuasselC
