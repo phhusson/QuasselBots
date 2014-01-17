@@ -51,8 +51,6 @@ void check_hilight(const char *buffer, const char* nick, const char* msg) {
 	if(ischannel(buffer)) {
 		if(strstr(msg, "phh"))
 			send_notif(buffer, nick, msg);
-		else if(strstr(msg, "lau ") || strstr(msg, "lau:") || strstr(msg, "lau,"))
-			send_notif(buffer, nick, msg);
 	} else {
 		send_notif(buffer, nick, msg);
 	}
