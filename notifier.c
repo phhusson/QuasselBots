@@ -15,6 +15,7 @@
    along with QuasselC.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#define _GNU_SOURCE
 #include <asm/socket.h>
 #include <sys/types.h>
 #include <sys/socket.h>
