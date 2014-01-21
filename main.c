@@ -88,6 +88,9 @@ void handle_message(struct message m, void *arg) {
 	if(m.type == 1024 || m.type == 32)
 		minbif_rename(chan, m.type == 1024, m.buffer.network, nick, m.content);
 #endif
+#ifdef LUA_BIND
+	lua_msg(chan, m.type, m.buffer.network, m.buffer.name, nick, m.content);
+#endif
 	free(nick);
 }
 

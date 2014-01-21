@@ -5,4 +5,5 @@
 #define IRSSI_NOTIFIER
 
 #define MINBIF_RENAMER
+#define LUA_BIND
 #endif
