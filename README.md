@@ -12,3 +12,5 @@ Edit notifier.c to control what to hilight on.
 config.lua must define a msg(type, net, channel, nick, msg) callback.
 It can use the send(net, channel, cmd), which sends a command, not a message.
 Commands which begin without a / are considered as messages by Quassel.
+
+Support channel: #quassel-irssi @ irc.freenode.net
