@@ -252,7 +252,7 @@ void handle_event(void* arg, GIOChannel* h, event_t t, ...) {
 			quassel_login(h, user, pass);
 			break;
 		case SessionInit:
-			initRequest(h, "BufferViewStatus", "0");
+			initRequest(h, "BufferViewManager", "");
 			break;
 		case TopicChange:
 			break;
