@@ -8,5 +8,8 @@ void perm_hide(GIOChannel *h, uint32_t net, const char *name);
 void check_hilight(const char *buffer, const char* nick, const char* msg);
 //minbif.c
 void minbif_rename(GIOChannel *h, int type, int net, char *nick, char *msg);
+//lua.c
+void lua_message(GIOChannel *h, int type, int net, char *nick, char *msg);
+void lua_timeout(GIOChannel *h);
 
 #endif

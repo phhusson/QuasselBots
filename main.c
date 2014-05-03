@@ -359,6 +359,13 @@ static int create_socket(const char* host, const char* port) {
 	return sfd;
 }
 
+static int timer_handler(GIOChannel *chan) {
+#ifdef LUA_BIND
+	lua_timeout(chan);
+#endif
+	return  1;
+}
+
 int main(int argc, char **argv) {
 	if(argc != 5) {
 		fprintf(stderr, "%s: <host> <port> <user> <pass>\n", argv[0]);
@@ -383,6 +390,8 @@ int main(int argc, char **argv) {
 	} else fprintf(stderr, "Using new protocol\n");
 	quassel_init_packet(in, 0);
 	g_io_add_watch(in, G_IO_IN, io_handler, &b);
+
+	g_timeout_add(1000, timer_handler, in);
 	GMainLoop *loop = g_main_loop_new(NULL, FALSE);
 	g_main_loop_run(loop);
 }

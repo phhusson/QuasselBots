@@ -85,7 +85,6 @@ static void __init(void) {
 	lua_setglobal(L, "temp_hide");
 }
 
-
 void lua_msg(GIOChannel *h, int type, int net, char *buffer, char *nick, char *msg) {
 	_h = h;
 	lua_getglobal(L, "msg");
@@ -106,4 +105,21 @@ void lua_msg(GIOChannel *h, int type, int net, char *buffer, char *nick, char *m
 	}
 }
 
+void lua_timeout(GIOChannel *h) {
+	static int current = 0;
+	_h = h;
+	lua_getglobal(L, "timeout");
+	if(lua_isnil(L, -1))
+		return;
+	if(lua_type(L, -1) != LUA_TFUNCTION) {
+		fprintf(stderr, "timeout must be a function\n");
+		exit(1);
+	}
+	lua_pushnumber(L, current);
+	if(lua_pcall(L, 1, 0, 0)) {
+		fprintf(stderr, "Got lua error: %s\n", lua_tostring(L, -1));
+		exit(1);
+	}
+	current++;
+}
 #endif /* LUA_BIND */
