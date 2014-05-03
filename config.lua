@@ -3,5 +3,7 @@ function msg(typeid, net, buffer, nick, msg)
 		send(net, buffer, "Helloyou.")
 	end
 	print("Got ", msg)
+	temp_hide(-1, "#codingame_fr")
+	print("Got ", msg)
 end
 

@@ -61,7 +61,22 @@ static int find_buffer_id(uint32_t net, char *name) {
 	return -1;
 }
 
-void send_msg(GIOChannel *h, uint32_t net, char *name, char *msg) {
+void temp_hide(GIOChannel *h, uint32_t net, const char *name) {
+	int id = find_buffer_id(net, name);
+	fprintf(stderr, "Temp hide: %d:%d:%s\n", net, id, name);
+	if(id==-1)
+		return;
+	quassel_temp_hide(h, id);
+}
+
+void perm_hide(GIOChannel *h, uint32_t net, const char *name) {
+	int id = find_buffer_id(net, name);
+	if(id==-1)
+		return;
+	quassel_temp_hide(h, id);
+}
+
+void send_msg(GIOChannel *h, uint32_t net, const char *name, const char *msg) {
 	int id = find_buffer_id(net, name);
 	if(id==-1)
 		return;

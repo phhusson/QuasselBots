@@ -1,6 +1,8 @@
 #ifndef qMAIN_H
 #define qMAIN_H
-void send_msg(GIOChannel *h, uint32_t net, char *name, char *msg);
+void send_msg(GIOChannel *h, uint32_t net, const char *name, const char *msg);
+void temp_hide(GIOChannel *h, uint32_t net, const char *name);
+void perm_hide(GIOChannel *h, uint32_t net, const char *name);
 
 //notifier.c
 void check_hilight(const char *buffer, const char* nick, const char* msg);

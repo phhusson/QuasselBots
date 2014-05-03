@@ -41,11 +41,29 @@ static lua_State* L;
 static GIOChannel *_h =NULL;
 static int Lsend(lua_State *L) {
 	int net = lua_tonumber(L, -3);
-	char *buffer = lua_tostring(L, -2);
-	char *cmd = lua_tostring(L, -1);
+	const char *buffer = lua_tostring(L, -2);
+	const char *cmd = lua_tostring(L, -1);
 
 	if(_h != NULL)
 		send_msg(_h, net, buffer, cmd);
+	return 0;
+}
+
+static int Lperm_hide(lua_State *L) {
+	int net = lua_tonumber(L, -2);
+	const char *buffer = lua_tostring(L, -1);
+
+	if(_h != NULL)
+		perm_hide(_h, net, buffer);
+	return 0;
+}
+
+static int Ltemp_hide(lua_State *L) {
+	int net = lua_tonumber(L, -2);
+	const char *buffer = lua_tostring(L, -1);
+
+	if(_h != NULL)
+		temp_hide(_h, net, buffer);
 	return 0;
 }
 
@@ -59,6 +77,12 @@ static void __init(void) {
 	}
 	lua_pushcfunction(L, Lsend);
 	lua_setglobal(L, "send");
+
+	lua_pushcfunction(L, Lperm_hide);
+	lua_setglobal(L, "perm_hide");
+
+	lua_pushcfunction(L, Ltemp_hide);
+	lua_setglobal(L, "temp_hide");
 }
 
 
