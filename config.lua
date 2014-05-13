@@ -15,7 +15,7 @@ function msg(typeid, net, buffer, nick, msg)
 		send(net, buffer, "Helloyou.")
 	end
 	print("Got ", msg)
-	autohide_msg(net, buffer)
+	autohide_msg(net, buffer, typeid == 1)
 end
 
 function timeout(pos)
@@ -23,9 +23,11 @@ function timeout(pos)
 end
 autohide_last={}
 
-function autohide_msg(net, buffer)
+function autohide_msg(net, buffer, useful)
 	local name = ""..net.."-"..buffer
-	autohide_last[name] = 0
+	if useful or autohide_last[name] == nil then
+		autohide_last[name] = 0
+	end
 end
 
 function autohide_timeout()
