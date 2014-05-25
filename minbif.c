@@ -66,6 +66,8 @@ static void whois_handle(GIOChannel *h, int net, char *nick, char *_msg) {
 	if(name == NULL)
 		goto end;
 	name += sizeof(Whois);
+	if(strncmp(name, "%1", 2) == 0)
+		name += 2;
 
 	char *stripped = stripname(fullname);
 	printf("Renaming %s to %s (name=%s)\n", name, stripped, fullname);
