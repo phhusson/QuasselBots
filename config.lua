@@ -27,6 +27,9 @@ function autohide_msg(net, buffer, useful)
 	local name = ""..net.."-"..buffer
 	if useful or autohide_last[name] == nil then
 		autohide_last[name] = 0
+		--Someone spoke here... Unhide !
+		--Todo: Do it only if we hid the buffer before
+		append_buffer(net, buffer)
 	end
 end
 

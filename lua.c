@@ -67,6 +67,15 @@ static int Ltemp_hide(lua_State *L) {
 	return 0;
 }
 
+static int Lappend_buffer(lua_State *L) {
+	int net = lua_tonumber(L, -2);
+	const char *buffer = lua_tostring(L, -1);
+
+	if(_h != NULL)
+		append_buffer(_h, net, buffer);
+	return 0;
+}
+
 static void __init(void) __attribute__((constructor));
 static void __init(void) {
 	L = luaL_newstate();
@@ -83,6 +92,9 @@ static void __init(void) {
 
 	lua_pushcfunction(L, Ltemp_hide);
 	lua_setglobal(L, "temp_hide");
+
+	lua_pushcfunction(L, Lappend_buffer);
+	lua_setglobal(L, "append_buffer");
 }
 
 void lua_msg(GIOChannel *h, int type, int net, char *buffer, char *nick, char *msg) {

@@ -1,4 +1,4 @@
-CFLAGS:=-IQuasselC $(shell pkg-config glib-2.0 --cflags) -std=gnu11 -Wall -Wextra -g
+CFLAGS:=-IQuasselC $(shell pkg-config glib-2.0 --cflags) -std=gnu11 -Wall -Wextra -g -fPIC
 CFLAGS+=$(shell pkg-config lua5.2 --cflags)
 
 LDLIBS:=$(shell pkg-config glib-2.0 --libs) 

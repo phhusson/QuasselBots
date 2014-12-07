@@ -100,7 +100,6 @@ static struct network *find_create_network(uint32_t id) {
 
 void temp_hide(GIOChannel *h, uint32_t net, const char *name) {
 	int id = find_buffer_id(net, name);
-	fprintf(stderr, "Temp hide: %d:%d:%s\n", net, id, name);
 	if(id==-1)
 		return;
 	quassel_temp_hide(h, id);
@@ -111,6 +110,13 @@ void perm_hide(GIOChannel *h, uint32_t net, const char *name) {
 	if(id==-1)
 		return;
 	quassel_temp_hide(h, id);
+}
+
+void append_buffer(GIOChannel *h, uint32_t net, const char *name) {
+	int id = find_buffer_id(net, name);
+	if(id==-1)
+		return;
+	quassel_append_buffer(h, id);
 }
 
 void send_msg(GIOChannel *h, uint32_t net, const char *name, const char *msg) {
