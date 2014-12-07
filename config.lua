@@ -7,7 +7,7 @@ autohide_setting={
 
 	-- Specific settings
 	["5-#quassel-irssi"] = -1,
-	["5-phh_"] = 30,
+	["5-phh_"] = 60,
 }
 
 function msg(typeid, net, buffer, nick, msg)
@@ -22,6 +22,7 @@ function timeout(pos)
 	autohide_timeout()
 end
 autohide_last={}
+autohidden={}
 
 function autohide_msg(net, buffer, useful)
 	local name = ""..net.."-"..buffer
@@ -29,7 +30,11 @@ function autohide_msg(net, buffer, useful)
 		autohide_last[name] = 0
 		--Someone spoke here... Unhide !
 		--Todo: Do it only if we hid the buffer before
-		append_buffer(net, buffer)
+		if autohidden[name] then
+			print("Unhiding ", name)
+			append_buffer(net, buffer)
+			autohidden[name] = false
+		end
 	end
 end
 
@@ -63,6 +68,7 @@ function autohide_timeout()
 				autohide_last[i] = autohide_last[i]+10
 				print("Hiding ", net, "-", buffer)
 				temp_hide(net, buffer)
+				autohidden[i] = true
 			end
 		until true
 	end
