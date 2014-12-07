@@ -29,6 +29,7 @@
 #include "export.h"
 
 #include "qconfig.h"
+#include "main.h"
 
 #ifdef IRSSI_NOTIFIER
 char* clean_string(char *buffer) {

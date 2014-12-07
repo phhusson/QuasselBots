@@ -48,7 +48,7 @@ struct buffer {
 static struct buffer *buffers;
 static int n_buffers;
 
-static int find_buffer_id(uint32_t net, char *name) {
+static int find_buffer_id(uint32_t net, const char *name) {
 	int i;
 	for(i=0;i<n_buffers;++i) {
 		if(buffers[i].i.id==(uint32_t)-1)
@@ -391,7 +391,7 @@ int main(int argc, char **argv) {
 	quassel_init_packet(in, 0);
 	g_io_add_watch(in, G_IO_IN, io_handler, &b);
 
-	g_timeout_add(1000, timer_handler, in);
+	g_timeout_add(1000, (GSourceFunc)timer_handler, in);
 	GMainLoop *loop = g_main_loop_new(NULL, FALSE);
 	g_main_loop_run(loop);
 }
