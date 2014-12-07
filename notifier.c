@@ -66,9 +66,23 @@ static int ischannel(const char *c) {
 	return 0;
 }
 
-void check_hilight(const char *buffer, const char* nick, const char* msg) {
+void check_hilight(int network, const char *buffer, const char* nick, const char* msg) {
+	char *mynick = NULL;
+
+	struct network *n = find_network(network);
+	if(n) {
+		mynick = n->myNick;
+	} else {
+		fprintf(stderr, "Network %d not found, can't find my nick\n", network);
+		return;
+	}
+
+	if(!nick) return;
+
+	if(strcmp(nick, mynick)==0)
+		return;
 	if(ischannel(buffer)) {
-		if(strstr(msg, "phh"))
+		if(strstr(msg, mynick))
 			send_notif(buffer, nick, msg);
 	} else {
 		send_notif(buffer, nick, msg);

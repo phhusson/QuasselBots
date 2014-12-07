@@ -61,6 +61,43 @@ static int find_buffer_id(uint32_t net, const char *name) {
 	return -1;
 }
 
+static struct network *networks = NULL;
+struct network *find_network(uint32_t id) {
+	if(!networks) return NULL;
+	struct network *net = networks;
+	while(net->id != -1) {
+		if(net->id == id)
+			return net;
+		net++;
+	}
+	return NULL;
+}
+
+static struct network *find_create_network(uint32_t id) {
+	struct network *net = find_network(id);
+	if(net) return net;
+
+	if(!networks) {
+		networks = malloc(sizeof(struct network)*2);
+		networks[1].id=-1;
+
+		bzero(networks, sizeof(struct network));
+		networks[0].id=id;
+		return networks;
+	}
+
+	net = networks;
+	while(net->id != -1) net++;
+	int n=net-networks;
+
+	networks=realloc(networks, (n+2)*sizeof(struct network)); // One for new network, one for -1 (end of list) network
+	networks[n+1].id = -1;
+
+	bzero(networks+n, sizeof(struct network));
+	networks[n].id = id;
+	return networks+n;
+}
+
 void temp_hide(GIOChannel *h, uint32_t net, const char *name) {
 	int id = find_buffer_id(net, name);
 	fprintf(stderr, "Temp hide: %d:%d:%s\n", net, id, name);
@@ -96,7 +133,7 @@ void handle_message(struct message m, void *arg) {
 	printf("%s: %s says (type=%d) %s\n", m.buffer.name, nick, m.type, m.content);
 #ifdef IRSSI_NOTIFIER
 	if(m.type == 1)
-		check_hilight(m.buffer.name, nick, m.content);
+		check_hilight(m.buffer.network, m.buffer.name, nick, m.content);
 #endif
 
 #ifdef MINBIF_RENAMER
@@ -251,6 +288,13 @@ void handle_sync(void* arg, object_t o, function_t f, ...) {
 			net=va_arg(ap, char*);
 			latency=va_arg(ap, int);
 			dprintf("SetLatency(%s, %d)\n", net, latency);
+			break;
+		case MyNick:
+			net = va_arg(ap, char*);
+			nick = va_arg(ap, char*);
+			dprintf("MyNick(%s, %s)\n", net, nick);
+			struct network *network = find_create_network(atoi(net));
+			network->myNick = strdup(nick);
 			break;
 	}
 	va_end(ap);
